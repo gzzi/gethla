@@ -5,7 +5,7 @@
 static void print_device(libusb_device *dev) {
 	struct libusb_device_descriptor desc;
 	libusb_device_handle *handle = NULL;
-	char string[256];
+	unsigned char string[256];
 	int ret;
 
 	ret = libusb_get_device_descriptor(dev, &desc);
@@ -20,10 +20,10 @@ static void print_device(libusb_device *dev) {
 		ret = libusb_open(dev, &handle);
 		if (LIBUSB_SUCCESS == ret) {
 			if (desc.iSerialNumber) {
-					ret = libusb_get_string_descriptor_ascii(handle, desc.iSerialNumber, string, sizeof(string));
+					ret = libusb_get_string_descriptor(handle, desc.iSerialNumber, 0x0409, string, sizeof(string));
 					if (ret > 0) {
 						printf("STLink V2   hla_serial ");
-						for (int i = 0; i < ret; i++) {
+						for (int i = 2; i < string[0]; i+=2) {
 							printf("\\x%02X",string[i]);
 						}
 						printf("\n");
