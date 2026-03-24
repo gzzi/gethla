@@ -33,6 +33,7 @@ static void print_device(libusb_device *dev) {
 				}
 			}
 			break;
+		case 0x374f:
 		case 0x374b:
 			ret = libusb_open(dev, &handle);
 					if (LIBUSB_SUCCESS == ret) {
